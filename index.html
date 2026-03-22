@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MQR 2.0 - Code the Future</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #c799ff; --primary-dim: #ba85fb; --secondary: #4af8e3;
+    --tertiary: #ff9dac; --error: #ff6e84; --background: #0d0e12;
+    --surface: #0d0e12; --surface-container: #18191e;
+    --surface-container-low: #121318; --surface-container-high: #1e1f25;
+    --surface-container-highest: #24252b; --surface-container-lowest: #000000;
+    --on-surface: #faf8fe; --on-surface-variant: #abaab0;
+    --on-primary: #440080; --on-secondary: #005b51;
+    --outline-variant: #47484c; --outline: #75757a;
+  }
+  html { scroll-behavior: smooth; }
+  body { background-color: var(--background); color: var(--on-surface); font-family: 'Manrope', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; text-transform: none; letter-spacing: normal; word-wrap: normal; white-space: nowrap; direction: ltr; }
+  .font-headline { font-family: 'Space Grotesk', sans-serif; }
+  .font-label { font-family: 'Space Grotesk', sans-serif; }
+  header { position: fixed; top: 0; width: 100%; z-index: 50; background: rgba(13,14,18,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(199,153,255,0.08); }
+  .header-inner { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; max-width: 1280px; margin: 0 auto; }
+  .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+  .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: -0.05em; text-shadow: 0 0 10px rgba(199,153,255,0.3); }
+  nav { display: flex; gap: 2rem; align-items: center; }
+  nav a { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(199,153,255,0.7); text-decoration: none; transition: color 0.2s; }
+  nav a:hover { color: var(--primary); }
+  nav a.active { color: var(--secondary); border-bottom: 2px solid var(--secondary); padding-bottom: 2px; }
+  .cyber-grid { background-image: linear-gradient(to right, rgba(199,153,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(199,153,255,0.05) 1px, transparent 1px); background-size: 40px 40px; }
+  .section-wrap { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+  #hero { position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; padding-top: 5rem; }
+  #hero .bg-blob-1 { position: absolute; top: -10%; right: -10%; width: 600px; height: 600px; background: rgba(199,153,255,0.1); filter: blur(120px); border-radius: 50%; pointer-events: none; }
+  #hero .bg-blob-2 { position: absolute; bottom: -5%; left: -5%; width: 400px; height: 400px; background: rgba(74,248,227,0.1); filter: blur(100px); border-radius: 50%; pointer-events: none; }
+  .hero-content { position: relative; z-index: 1; padding: 5rem 0 4rem; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; margin-bottom: 3rem; }
+  .status-dot { display: flex; align-items: center; gap: 0.5rem; }
+  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); box-shadow: 0 0 8px rgba(74,248,227,0.8); animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+  .status-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); }
+  .meta-item { display: flex; flex-direction: column; }
+  .meta-label { font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--on-surface-variant); }
+  .meta-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; }
+  .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(4rem, 12vw, 9rem); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; margin-bottom: 1.5rem; }
+  .hero-title .accent { background: linear-gradient(135deg, var(--primary), var(--primary-dim)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 15px rgba(199,153,255,0.4)); }
+  .hero-sub { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.3rem, 3vw, 2.2rem); font-weight: 300; color: var(--on-surface-variant); letter-spacing: -0.02em; margin-bottom: 3rem; max-width: 600px; line-height: 1.4; }
+  .hero-sub em { color: var(--on-surface); font-style: italic; font-weight: 500; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  .btn-primary { background: var(--primary); color: var(--on-primary); padding: 1rem 2rem; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; border: none; cursor: pointer; box-shadow: 0 0 20px rgba(199,153,255,0.3); transition: transform 0.2s; text-decoration: none; display: inline-block; }
+  .btn-primary:hover { transform: scale(1.05); }
+  .btn-outline { background: transparent; border: 1px solid rgba(74,248,227,0.4); color: var(--secondary); padding: 1rem 2rem; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+  .btn-outline:hover { background: rgba(74,248,227,0.05); border-color: var(--secondary); }
+  .bento-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; padding: 4rem 1.5rem; background: var(--surface-container-low); }
+  .bento-card { background: var(--surface-container); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; border-left: 2px solid rgba(199,153,255,0.2); }
+  .bento-card.accent { background: var(--primary); }
+  .bento-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; margin-top: 1rem; }
+  .bento-card p { font-size: 0.8rem; color: var(--on-surface-variant); margin-top: 0.5rem; }
+  #about { padding: 6rem 1.5rem; max-width: 1280px; margin: 0 auto; }
+  .section-tag { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+  .section-tag span { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; color: var(--secondary); }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; letter-spacing: -0.05em; line-height: 1; margin-bottom: 1.5rem; }
+  .section-title .accent { background: linear-gradient(135deg, var(--primary), var(--primary-dim)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .section-desc { font-size: 1.1rem; color: var(--on-surface-variant); max-width: 600px; line-height: 1.7; margin-bottom: 3rem; }
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .feature-card { background: var(--surface-container); padding: 2rem; border-left: 2px solid var(--primary); }
+  .feature-card.teal { border-left-color: var(--secondary); }
+  .feature-card.red { border-left-color: var(--error); }
+  .feature-card .icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 3rem; }
+  .feature-card.teal .icon { color: var(--secondary); }
+  .feature-card.red .icon { color: var(--error); }
+  .feature-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; }
+  .feature-card.teal h3 { color: var(--secondary); }
+  .feature-card.red h3 { color: var(--error); }
+  .feature-card p { font-size: 0.85rem; color: var(--on-surface-variant); line-height: 1.6; margin-bottom: 1.5rem; }
+  .card-tag { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; padding: 0.25rem 0.5rem; border: 1px solid rgba(199,153,255,0.3); color: var(--primary); }
+  .feature-card.teal .card-tag { border-color: rgba(74,248,227,0.3); color: var(--secondary); }
+  .feature-card.red .card-tag { border-color: rgba(255,110,132,0.3); color: var(--error); }
+  #timeline { background: var(--surface-container-low); padding: 6rem 1.5rem; }
+  .timeline-wrap { max-width: 1280px; margin: 0 auto; }
+  .timeline-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; position: relative; }
+  .timeline-grid::before { content: ''; position: absolute; top: 2rem; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--primary), var(--secondary), var(--primary-dim)); opacity: 0.3; }
+  .timeline-node { position: relative; }
+  .node-dot { width: 1.5rem; height: 1.5rem; border: 2px solid var(--primary); background: var(--background); transform: rotate(45deg); margin: 0 auto 2rem; box-shadow: 0 0 15px rgba(199,153,255,0.4); position: relative; z-index: 1; }
+  .node-dot.teal { border-color: var(--secondary); box-shadow: 0 0 15px rgba(74,248,227,0.4); }
+  .node-dot.pink { border-color: var(--tertiary); box-shadow: 0 0 15px rgba(255,157,172,0.4); }
+  .phase-card { background: var(--surface-container-low); padding: 1.5rem; border-left: 2px solid rgba(199,153,255,0.2); }
+  .phase-card.teal { border-left-color: rgba(74,248,227,0.2); background: var(--surface-container); }
+  .phase-card.pink { border-left-color: rgba(255,157,172,0.2); }
+  .phase-label { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--primary); margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+  .phase-label.teal { color: var(--secondary); }
+  .phase-label.pink { color: var(--tertiary); }
+  .phase-hrs { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--primary); }
+  .phase-hrs.pink { color: var(--tertiary); }
+  .phase-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .phase-card p { font-size: 0.75rem; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.5; margin-bottom: 1rem; }
+  .phase-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .phase-tag { font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; text-transform: uppercase; padding: 0.2rem 0.5rem; background: var(--surface-container); border: 1px solid rgba(71,72,76,0.2); color: var(--on-surface-variant); }
+  #rules { padding: 6rem 1.5rem; background-image: radial-gradient(rgba(199,153,255,0.1) 1px, transparent 1px); background-size: 40px 40px; }
+  .rules-wrap { max-width: 1280px; margin: 0 auto; }
+  .rules-header { border-left: 4px solid var(--secondary); padding-left: 2rem; margin-bottom: 3rem; }
+  .rules-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+  .rule-card { background: var(--surface-container-low); padding: 2.5rem; position: relative; overflow: hidden; }
+  .rule-card.side { background: var(--surface-container); }
+  .rule-card.highlight { background: var(--primary); color: var(--on-primary); }
+  .rule-num { position: absolute; top: 0; right: 1rem; font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 900; color: rgba(255,255,255,0.05); line-height: 1; pointer-events: none; }
+  .rule-icon { font-size: 2rem; color: var(--secondary); margin-bottom: 1rem; }
+  .rule-icon.red { color: var(--error); }
+  .rule-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; }
+  .rule-card p { font-size: 0.85rem; color: var(--on-surface-variant); line-height: 1.6; }
+  .rule-card.highlight p { color: rgba(68,0,128,0.85); }
+  .rule-card.highlight h3 { color: var(--on-primary); font-style: italic; font-size: 1.4rem; }
+  .live-badge { display: flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem; }
+  .live-badge span { font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); }
+  .terminal-box { background: var(--surface-container-lowest); padding: 1.5rem; font-family: monospace; font-size: 0.7rem; color: rgba(74,248,227,0.6); line-height: 2; border: 1px solid rgba(71,72,76,0.1); grid-column: 1 / -1; }
+  #judges { padding: 6rem 1.5rem; max-width: 1280px; margin: 0 auto; }
+  .judges-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; letter-spacing: -0.05em; }
+  .judges-title .accent { color: var(--primary); }
+  .judges-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; }
+  .judge-card { background: var(--surface-container); padding: 2rem; display: flex; gap: 2rem; }
+  .judge-card.full { grid-column: 1 / -1; flex-direction: row; align-items: center; border-top: 1px solid rgba(71,72,76,0.2); }
+  .judge-card.stacked { flex-direction: column; }
+  .judge-avatar { width: 200px; height: 260px; flex-shrink: 0; background: var(--surface-container-low); overflow: hidden; }
+  .judge-avatar img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.2); }
+  .judge-avatar-sm { width: 100%; height: 200px; background: var(--surface-container-low); overflow: hidden; }
+  .judge-avatar-sm img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.2); }
+  .judge-avatar-circle { width: 180px; height: 180px; flex-shrink: 0; border-radius: 50%; overflow: hidden; border: 3px solid rgba(199,153,255,0.2); }
+  .judge-avatar-circle img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.2); }
+  .judge-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .judge-tier { font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--primary-dim); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .judge-tier::before { content:''; width:8px; height:8px; border-radius:50%; background:var(--primary); }
+  .judge-name { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .judge-name-sm { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .judge-role { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); margin-bottom: 1rem; }
+  .judge-desc { font-size: 0.85rem; color: var(--on-surface-variant); line-height: 1.6; margin-bottom: 1.5rem; }
+  .judge-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+  .stat-box { background: var(--surface-container); padding: 0.75rem; border-left: 2px solid var(--primary-dim); }
+  .stat-label { font-family: 'Space Grotesk', sans-serif; font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--primary-dim); margin-bottom: 0.25rem; }
+  .stat-val { font-size: 0.75rem; text-transform: uppercase; }
+  #register { padding: 6rem 1.5rem; background-image: radial-gradient(circle at 1px 1px, rgba(199,153,255,0.05) 1px, transparent 0); background-size: 40px 40px; position: relative; overflow: hidden; }
+  #register .bg-blob-1 { position: absolute; top: -10%; right: -10%; width: 500px; height: 500px; background: rgba(199,153,255,0.1); filter: blur(120px); border-radius: 50%; pointer-events: none; }
+  .register-wrap { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; position: relative; z-index: 1; }
+  .register-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; letter-spacing: -0.05em; line-height: 1.1; margin-bottom: 1rem; }
+  .register-title .accent { color: var(--primary); font-style: italic; }
+  .register-desc { font-size: 1rem; color: var(--on-surface-variant); max-width: 420px; line-height: 1.6; margin-bottom: 2rem; }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .mini-stat { background: var(--surface-container); padding: 1.25rem 1.5rem; border-left: 2px solid var(--primary); }
+  .mini-stat.teal { border-left-color: var(--secondary); }
+  .mini-stat-label { font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--primary); margin-bottom: 0.5rem; }
+  .mini-stat.teal .mini-stat-label { color: var(--secondary); }
+  .mini-stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; }
+  .form-box { background: var(--surface-container-low); padding: 2.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .form-label { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); }
+  .form-input, .form-select { background: var(--surface-container-lowest); border: none; border-bottom: 1px solid var(--outline-variant); color: var(--on-surface); font-family: 'Manrope', sans-serif; font-size: 0.9rem; padding: 0.75rem 0; width: 100%; outline: none; transition: border-color 0.2s; }
+  .form-input::placeholder { color: var(--outline); }
+  .form-input:focus, .form-select:focus { border-bottom-color: var(--secondary); }
+  .form-select { cursor: pointer; appearance: none; }
+  .github-row { display: flex; align-items: center; gap: 0.5rem; }
+  .github-at { color: var(--outline-variant); font-family: monospace; }
+  .form-footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(71,72,76,0.2); display: flex; justify-content: space-between; align-items: center; }
+  .form-footer-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--outline); }
+  .form-footer-status { font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); }
+  footer { background: #121318; border-top: 1px solid rgba(199,153,255,0.1); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-brand { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); }
+  .footer-copy { font-family: 'Manrope', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--secondary); margin-top: 0.25rem; }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { font-family: 'Manrope', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(199,153,255,0.5); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--secondary); }
+  @media (max-width: 768px) {
+    nav { display: none; }
+    .bento-row, .cards-grid, .timeline-grid, .rules-grid, .judges-grid, .register-wrap, .form-row { grid-template-columns: 1fr; }
+    .timeline-grid::before { display: none; }
+    .judge-card, .judge-card.full { flex-direction: column; }
+    .judge-avatar { width: 100%; height: 220px; }
+    .judge-stats { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#hero">
+      <span class="material-symbols-outlined" style="color:var(--primary)">terminal</span>
+      <span class="logo-text">MQR 2.0</span>
+    </a>
+    <nav>
+      <a class="active" href="#hero">Protocol</a>
+      <a href="#about">About</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#rules">Laws</a>
+      <a href="#judges">Judges</a>
+      <a href="#register">Register</a>
+    </nav>
+    <a class="btn-primary" href="#register" style="font-size:0.65rem;padding:0.6rem 1.2rem;">REGISTER_NOW</a>
+  </div>
+</header>
+
+<section id="hero" class="cyber-grid">
+  <div class="bg-blob-1"></div>
+  <div class="bg-blob-2"></div>
+  <div class="section-wrap" style="width:100%">
+    <div class="hero-content">
+      <div class="hero-meta">
+        <div class="status-dot"><div class="pulse"></div><span class="status-text">System Status: Online</span></div>
+        <div class="meta-item"><span class="meta-label">Transmission Date</span><span class="meta-value font-headline">March 22–23, 2026</span></div>
+        <div class="meta-item"><span class="meta-label">Operational Zone</span><span class="meta-value font-headline">VIRTUAL HUB</span></div>
+      </div>
+      <h1 class="hero-title font-headline">MQR <span class="accent">2.0</span></h1>
+      <p class="hero-sub font-headline">No Code. <em>Just Intelligence.</em></p>
+      <div class="btn-row">
+        <a class="btn-primary" href="#register">INITIALIZE_REGISTRATION</a>
+        <a class="btn-outline" href="#about">VIEW_MANIFESTO</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="bento-row">
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:1rem;max-width:1280px;margin:0 auto;width:100%">
+    <div class="bento-card"><span class="material-symbols-outlined" style="color:var(--primary);font-size:2.5rem">hub</span><div><h3 class="font-headline">NEURAL NETWORK</h3><p>Collaborative intelligence nodes connecting participants globally.</p></div></div>
+    <div class="bento-card" style="border-left-color:rgba(74,248,227,0.3)"><span class="material-symbols-outlined" style="color:var(--secondary);font-size:2rem">bolt</span><div><h3 class="font-headline">FAST_SYNC</h3><p style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;text-transform:uppercase">12ms response time</p></div></div>
+    <div class="bento-card accent"><span class="material-symbols-outlined" style="color:var(--on-primary);font-size:2rem">security</span><div><h3 class="font-headline" style="color:var(--on-primary)">SECURE_ID</h3><p style="color:rgba(68,0,128,0.7);font-family:'Space Grotesk',sans-serif;font-size:0.65rem;text-transform:uppercase">Identity verified</p></div></div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-tag"><div class="pulse"></div><span>Status: Researching Genesis</span></div>
+    <h2 class="section-title font-headline">What is <span class="accent">MQR 2.0?</span></h2>
+    <p class="section-desc">A decentralized build-sprint engineered for the next generation of autonomous builders. No hand-holding. No fluff. Just raw execution in the dark.</p>
+    <div class="cards-grid">
+      <div class="feature-card"><span class="material-symbols-outlined icon">psychology</span><h3>AI Agents Only</h3><p>Deploy, test, and scale using custom agentic frameworks. If it's not automated, it's obsolete.</p><span class="card-tag">CORE_DIRECTIVE_01</span></div>
+      <div class="feature-card teal"><span class="material-symbols-outlined icon">visibility_off</span><h3>No Mentor Guidance</h3><p>Trial by fire. No office hours or help desks. You solve your own bottlenecks or stagnate.</p><span class="card-tag">AUTONOMY_LEVEL_MAX</span></div>
+      <div class="feature-card red"><span class="material-symbols-outlined icon">rocket_launch</span><h3>Ship or Go Home</h3><p>Code is the only artifact that matters. If the terminal doesn't output success, the mission fails.</p><span class="card-tag">BINARY_OUTCOME</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="timeline-wrap">
+    <div class="section-tag"><span style="width:3rem;height:1px;background:var(--secondary);display:inline-block"></span><span>Operation: Genesis</span></div>
+    <h2 class="section-title font-headline">The Battle <span style="color:var(--primary);font-style:italic">Plan</span></h2>
+    <p class="section-desc">Follow the mission clock for optimal execution within the neural perimeter.</p>
+    <div class="timeline-grid">
+      <div class="timeline-node"><div class="node-dot"></div><div class="phase-card"><div class="phase-label">PHASE_01<span class="phase-hrs">12HRS</span></div><h3 class="font-headline">SETUP</h3><p>Configure your environment. Initialize neural hardware and perimeter security protocols.</p><div class="phase-tags"><span class="phase-tag">DNS_ROUTING</span><span class="phase-tag">FIREWALL_UP</span></div></div></div>
+      <div class="timeline-node"><div class="node-dot teal"></div><div class="phase-card teal"><div class="phase-label teal">PHASE_02<span class="phase-hrs">07HRS</span></div><h3 class="font-headline">BUILD</h3><p>Active architectural synthesis. Ship using AI agents only. No manual coding.</p><div class="phase-tags"><span class="phase-tag" style="border-color:rgba(74,248,227,0.2);color:var(--secondary)">LIVE_COMPILE</span><span class="phase-tag" style="border-color:rgba(74,248,227,0.2);color:var(--secondary)">KERNEL_PATCH</span></div></div></div>
+      <div class="timeline-node"><div class="node-dot pink"></div><div class="phase-card pink"><div class="phase-label pink">PHASE_03<span class="phase-hrs pink">07HRS</span></div><h3 class="font-headline">BREAK</h3><p>Find the limits. Break the code. Discover the boundaries of AI coding tools.</p><div class="phase-tags"><span class="phase-tag">RECHARGE</span><span class="phase-tag">SYNC</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="rules">
+  <div class="rules-wrap">
+    <div class="rules-header">
+      <h2 class="section-title font-headline">The Laws of <span class="accent">MQR</span></h2>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.3em;color:var(--secondary)">Security Protocol v4.02 — ESTABLISHED 2077</div>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-card"><div class="rule-num">01</div><div style="display:flex;align-items:flex-start;gap:1.5rem"><span class="material-symbols-outlined rule-icon">block</span><div><h3 class="font-headline">No human code allowed.</h3><p>Direct manual input strictly prohibited. Every character must be generated through AI. Manual commits trigger immediate session termination.</p></div></div></div>
+      <div class="rule-card side"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem"><span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:700;text-transform:uppercase;color:var(--secondary)">LAW_02</span><span class="material-symbols-outlined" style="color:var(--primary)">fingerprint</span></div><h3 class="font-headline">AI agents must be pre-registered.</h3><p>All agent specs must be logged in the MQR Registry 24 hours prior to launch.</p></div>
+      <div class="rule-card"><span class="material-symbols-outlined rule-icon red">person_off</span><h3 class="font-headline">No external mentor assistance.</h3><p>Isolated intelligence test. Proxied consultation results in permanent exclusion from the MQR Protocol.</p><div class="live-badge"><div class="pulse"></div><span>Live Monitoring Active</span></div></div>
+      <div class="rule-card side"><h3 class="font-headline">Submission deadline is final.</h3><p>Files arriving at T+1ms automatically rejected. Synchronize to MQR Global Time.</p><div style="margin-top:1rem;font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:700;color:var(--primary)">T-MINUS 00:00:00:00</div></div>
+      <div class="rule-card highlight"><h3>Code must be open source.</h3><p>Knowledge belongs to the network. All winning logic published under MIT-2077 license.</p><div style="display:flex;align-items:center;gap:0.75rem;margin-top:1.5rem"><span class="material-symbols-outlined" style="font-size:2rem">data_object</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:700;text-transform:uppercase">Protocol / Public / Repo</span></div></div>
+      <div class="terminal-box"><p>&gt; initializing_gatekeeper_protocol... [OK]</p><p>&gt; scanning_network_for_unauthorized_biologicals... [NONE_FOUND]</p><p>&gt; verifying_rule_set_encryption... [AES_256_ACTIVE]</p><p>&gt; all_laws_operational_within_sector_9...</p><p>&gt; _</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="judges" style="background:var(--surface-container-low);padding:6rem 1.5rem">
+  <div class="section-wrap" style="margin-bottom:2.5rem">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3em;color:var(--secondary);margin-bottom:0.75rem">System_Authority // 05</div>
+    <h2 class="judges-title font-headline">WHO <span class="accent">JUDGES</span> YOU</h2>
+  </div>
+  <div class="section-wrap">
+    <div class="judges-grid">
+      <div class="judge-card"><div class="judge-avatar"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqgkcciZSIB7nYpj6IvBPOoAOfSODJPDgqi_Uf-G1-5H-W2qF9J61nduFn3s3ALx9y8NGa7U3VujeE6KACmQGXqyCzaXbU26A_EjDE2sZHfZtvICqgxGxsUScRpE9DFV_El7eM3dd1UqmCj6c9or9ZEuLhnYg9lBpyrXceFW16jD4Eae3TWItvF5MRQUt4XrVKC_9xI-FVfV-Z1jn66ala9wC9qTrHHSWIncCjtz93lxtVZg0PJv0DXSDEA1CKIUw2tS_1QKvgxkoI" alt="Lex Carbon"/></div><div class="judge-info"><div class="judge-tier">Architectural Tier</div><div class="judge-name font-headline">Lex Carbon</div><div class="judge-role font-label">AI Architect</div><p class="judge-desc">Specializing in decentralized neural networks. Evaluates the structural integrity of your AI implementation.</p><span class="btn-outline" style="font-size:0.65rem;padding:0.5rem 1rem;display:inline-block">View Profile</span></div></div>
+      <div class="judge-card stacked"><div class="judge-avatar-sm"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH1X6SyAjUmMx8dNRO2pcPfhw4Om1TvjHA3ltXS4mLPPn9vekIpjTGSrL97Tckf_ZfPXCFvtN3y-PGT31BbfuvwLxemo7_JfvOzX1_nP4tZYE6LRshMJlUbgcvZ8SunNikbByV4XM9Tlwyd8RkKsd-vFHkDQZhd6uIZO-ku9oRRoa7U5Eaot4CIasXc2DxNTK1rZ6vqIiWYhMDShnnlgL6TYknhgZGNUrbhuisAo8QMW354MJFNFRpR3ogvfwYXwiFMpf4V8BASPGv" alt="Nova Volt"/></div><div style="padding:1rem 0"><div class="judge-name-sm font-headline">Nova Volt</div><div class="judge-role font-label">Cyber-Security Expert</div><p class="judge-desc">Former Red-Team lead. Focuses on exploitability and defensive robustness of submitted protocols.</p><div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;text-transform:uppercase;color:var(--on-surface-variant)">Clearance: Level 9</div></div></div>
+      <div class="judge-card full"><div class="judge-avatar-circle"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsGJYdbXB2oCPZPIJ-4cQvx7b5Ajz-WiyGbC0nZIrwAKQGLIyj3MVeEakUFv603FzPKcD09pSjGWFYt-zLzrChbV9JoqGxhbF8iu0oCCROcHAXMyaYh1X3zVYPr-Yj1o4VS9Gr5qhz4MojSDK_HH0-2Rx4mRWxI5k0Ubt1A9sFF-1eZykTeYZhYEqe3m1IrnX2nTxR6PySf12v0Qjo46U9AuQgNxJ30x0_G8fTzvCIrbR9AqSW1zKjIWORhAE8jlvpSnHQ89pyI8mx" alt="Zero One"/></div><div class="judge-info"><div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem;flex-wrap:wrap"><div class="judge-name font-headline" style="font-size:2.5rem">Zero One</div><span class="btn-primary" style="font-size:0.6rem;padding:0.35rem 0.75rem;pointer-events:none">Lead Engineer</span></div><p class="judge-desc" style="max-width:600px;font-size:1rem">A pioneer of early monolithic kernels. Analyzes your logic flows and resource allocation with zero tolerance for inefficiency.</p><div class="judge-stats"><div class="stat-box"><div class="stat-label">Expertise</div><div class="stat-val">Low-Level Optimization</div></div><div class="stat-box"><div class="stat-label">Tenure</div><div class="stat-val">42 Cycles</div></div><div class="stat-box"><div class="stat-label">Projects</div><div class="stat-val">Core-Grid 1.0</div></div><div class="stat-box"><div class="stat-label">Status</div><div style="display:flex;align-items:center;gap:0.4rem"><div class="pulse"></div><div class="stat-val">Active</div></div></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="register">
+  <div class="bg-blob-1"></div>
+  <div class="register-wrap">
+    <div>
+      <div class="status-dot" style="margin-bottom:1rem"><div class="pulse"></div><span class="status-text">UPLINK_ESTABLISHED</span></div>
+      <h2 class="register-title font-headline">JOIN THE <span class="accent">SYNAPSE</span> GRID.</h2>
+      <p class="register-desc">Submit your credentials to authorize terminal access. MQR 2.0 is the next evolution of decentralized hackathons.</p>
+      <div class="stat-row">
+        <div class="mini-stat"><div class="mini-stat-label">System Status</div><div class="mini-stat-val font-headline">94% LOADED</div></div>
+        <div class="mini-stat teal"><div class="mini-stat-label">Nodes Active</div><div class="mini-stat-val font-headline">2,401 OPS</div></div>
+      </div>
+    </div>
+    <div class="form-box">
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0"><label class="form-label">Full Name</label><input class="form-input" type="text" placeholder="CASE_SENSITIVE_NAME"/></div>
+        <div class="form-group" style="margin-bottom:0"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="USER@GRID.NETWORK"/></div>
+      </div>
+      <div class="form-group"><label class="form-label">Team Name</label><input class="form-input" type="text" placeholder="ENTITY_DESIGNATION"/></div>
+      <div class="form-group"><label class="form-label">GitHub Username</label><div class="github-row"><span class="github-at">@</span><input class="form-input" type="text" placeholder="HANDLE"/></div></div>
+      <div class="form-group"><label class="form-label">AI Tool of Choice</label><select class="form-select form-input"><option>SELECT_MODEL</option><option>CLAUDE_SONNET_4</option><option>GPT-4O_TURBO</option><option>LLAMA_3_HACKER_EDITION</option><option>MQR_CUSTOM_AGENT</option></select></div>
+      <div style="padding-top:1.5rem"><button class="btn-primary" style="width:100%;padding:1.25rem;font-size:0.8rem;display:flex;align-items:center;justify-content:center;gap:0.75rem;border:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:1.2rem">bolt</span>INITIALIZE_REGISTRATION</button></div>
+      <div class="form-footer"><span class="form-footer-text">ESTABLISHING_SECURE_NODE...</span><span class="form-footer-status">READY</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><div class="footer-brand">MQR PROTOCOL</div><div class="footer-copy">© 2077 MQR PROTOCOL. ALL RIGHTS RESERVED.</div></div>
+  <div class="footer-links"><a href="#">TERMINAL_STATUS: ACTIVE</a><a href="#">ENCRYPTION: AES-256</a><a href="#">NETWORK_LATENCY: 12ms</a></div>
+</footer>
+
+</body>
+</html>
